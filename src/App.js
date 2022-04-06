@@ -22,6 +22,12 @@ function App() {
 
   // TODO -- add event for button click to handle calling fetchBusinesses with zip / search
 
+  const handleClick = async () => {
+    const data = await fetchBusinesses(zip, search);
+    setBusinesses(data);
+    setLoading(false);
+  };
+
   return (
     <div className="App">
       <h1>Alchemy Restaurant Finder</h1>
@@ -44,7 +50,7 @@ function App() {
             onChange={(e) => setSearch(e.target.value)} 
           />
         </div>
-        <button>Search</button>
+        <button onClick={handleClick}>Search</button>
       </div>
       {loading && <div className="loader"></div>}
       {!loading && businesses.map((b) => <RestaurantListItem key={b.id} {...b} />)}
