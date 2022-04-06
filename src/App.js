@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchBusinesses();
-      setBusinesses(data);
+      setBusinesses(data.businesses);
       setLoading(false);
     };
     fetchData();
@@ -24,9 +24,10 @@ function App() {
 
   const handleClick = async () => {
     const data = await fetchBusinesses(zip, search);
-    setBusinesses(data);
     setLoading(false);
+    return setBusinesses(data.businesses);
   };
+
 
   return (
     <div className="App">
