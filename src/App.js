@@ -8,6 +8,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [zip, setZip] = useState('97034');
   const [search, setSearch] = useState('');
+  const [error, setError] = useState('');
 
   // TODO -- add state for zip / search and add event listeners to the inputs
 
@@ -23,9 +24,17 @@ function App() {
   // TODO -- add event for button click to handle calling fetchBusinesses with zip / search
 
   const handleClick = async () => {
-    const data = await fetchBusinesses(zip, search);
-    setLoading(false);
-    return setBusinesses(data.businesses);
+    try {
+      if (zip === '') {
+        setError('Please enter your zip code.');
+      } else {
+        setError('');
+        const data = await fetchBusinesses(zip, search);
+        setLoading(false);
+        return setBusinesses(data.businesses);}
+    } catch (e) {
+      setError(e.message);
+    }
   };
 
 
@@ -52,6 +61,7 @@ function App() {
           />
         </div>
         <button onClick={handleClick}>Search</button>
+        {error && <p>{error}</p>}
       </div>
       {loading && <div className="loader"></div>}
       {!loading && businesses.map((b) => <RestaurantListItem key={b.id} {...b} />)}
